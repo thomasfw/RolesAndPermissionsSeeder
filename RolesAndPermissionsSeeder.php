@@ -118,12 +118,15 @@ class RolesAndPermissionsSeeder extends Seeder {
 					$this->command->error($commandBullet."Failed to attach permission '$permission_name'. It does not exist");
 	    			continue;
 	    		}
-	    			    		
-	    		$newPermission = new Permission();
-	    		$newPermission->name = key($permission);
-	    		if(isset($permission['display_name'])) $newPermission->display_name = $permission['display_name']; // optional
-	    		if(isset($permission['description'])) $newPermission->description  = $permission['description']; // optional
-	    		$newPermission->save();
+	    		
+				$newPermission = \Permission::where('name',$permission_name)->first();
+				if (!$newPermission) {
+					$newPermission = new Permission();
+					$newPermission->name = key($permission);
+					if(isset($permission['display_name'])) $newPermission->display_name = $permission['display_name']; // optional
+					if(isset($permission['description'])) $newPermission->description  = $permission['description']; // optional
+					$newPermission->save();
+				}	    		
 	    		$newRole->attachPermission($newPermission);
 	    		$pcount++;
 	    	}
