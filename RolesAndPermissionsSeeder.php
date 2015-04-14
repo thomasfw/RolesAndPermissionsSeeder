@@ -82,40 +82,40 @@ class RolesAndPermissionsSeeder extends Seeder {
 		}
 		$this->cleanup();
 	}
-    
-    
-   	/**
-    * Reset Role, Permissions & Users
-    *
-    * @param  $role
-    * @return void
-    */
-    public function reset($role) 
-    {
+	
+	
+	/**
+	* Reset Role, Permissions & Users
+	*
+	* @param  $role
+	* @return void
+	*/
+	public function reset($role) 
+	{
 		$commandBullet = '  -> ';
-    	// Remove all permissions (only the reset permissions will be saved)
-    	
-    	// The Old Role
-    	$originalRole = Role::where('name',$role['name'])->first();
-    	if($originalRole) Role::where('id',$originalRole->id)->update(['name' => $role['name'].'__remove']);
-    	    	
-    	// The New Role
-    	$newRole = new Role();
-    	$newRole->name  = $role['name'];
-    	if(isset($role['display_name'])) $newRole->display_name  = $role['display_name']; // optional
-    	if(isset($role['description'])) $newRole->description  = $role['description']; // optional
-    	$newRole->save();
-    	$this->command->info($commandBullet."Created $role[name] role");
-    	
-    	// Set the Permissions (if they exist)
-    	$pcount = 0;
-    	if(!empty($role['permissions']))
-    	{
+		// Remove all permissions (only the reset permissions will be saved)
+		
+		// The Old Role
+		$originalRole = Role::where('name',$role['name'])->first();
+		if($originalRole) Role::where('id',$originalRole->id)->update(['name' => $role['name'].'__remove']);
+		    	
+		// The New Role
+		$newRole = new Role();
+		$newRole->name  = $role['name'];
+		if(isset($role['display_name'])) $newRole->display_name  = $role['display_name']; // optional
+		if(isset($role['description'])) $newRole->description  = $role['description']; // optional
+		$newRole->save();
+		$this->command->info($commandBullet."Created $role[name] role");
+		
+		// Set the Permissions (if they exist)
+		$pcount = 0;
+		if(!empty($role['permissions']))
+		{
 	    	foreach ($role['permissions'] as $permission_name) {
 	    		
 	    		$permission = $this->permissions($permission_name);
 	    		if($permission === false || (!$permission_name)) {
-    				$this->command->error($commandBullet."Failed to attach permission '$permission_name'. It does not exist");
+					$this->command->error($commandBullet."Failed to attach permission '$permission_name'. It does not exist");
 	    			continue;
 	    		}
 	    			    		
@@ -127,13 +127,13 @@ class RolesAndPermissionsSeeder extends Seeder {
 	    		$newRole->attachPermission($newPermission);
 	    		$pcount++;
 	    	}
-    	}
-    	$this->command->info($commandBullet."Attached $pcount permissions to $role[name] role");
-    	
-    	// Update old records  
-    	if ($originalRole) 
-    	{  
-    		$userCount = 0;
+		}
+		$this->command->info($commandBullet."Attached $pcount permissions to $role[name] role");
+		
+		// Update old records  
+		if ($originalRole) 
+		{  
+			$userCount = 0;
 			$RoleUsers = DB::table(Config::get('entrust.role_user_table'))->where('role_id',$originalRole->id)->get();
 			foreach ($RoleUsers as $user) {
 				$u = User::where('id',$user->user_id)->first();
@@ -143,25 +143,25 @@ class RolesAndPermissionsSeeder extends Seeder {
 			$this->command->info($commandBullet."Updated role attachment for $userCount users");
 			
 			Role::where('id',$originalRole->id)->delete(); // will also remove old role_user records
-    		$this->command->info($commandBullet."Removed the original $role[name] role");
+			$this->command->info($commandBullet."Removed the original $role[name] role");
 		}
-    }
-    
-    
-    /**
-    * Cleanup()
-    * Remove any roles & permissions that have been removed
-    * @return void
-    */
-    public function cleanup() 
-    {
+	}
+	
+	
+	/**
+	* Cleanup()
+	* Remove any roles & permissions that have been removed
+	* @return void
+	*/
+	public function cleanup() 
+	{
 		$commandBullet = '  -> ';
-    	$this->command->info(" ");
-    	$this->command->info('Cleaning up roles & permissions:');
-    	$this->command->info('--------------------------------');
-    	
-    	$storedRoles = Role::all();
-    	if(!empty($storedRoles)) {
+		$this->command->info(" ");
+		$this->command->info('Cleaning up roles & permissions:');
+		$this->command->info('--------------------------------');
+		
+		$storedRoles = Role::all();
+		if(!empty($storedRoles)) {
 	    	$definedRoles = $this->roles();
 	    	foreach ($storedRoles as $role) {
 	    		if ( !array_key_exists($role->name,$definedRoles) ) {
@@ -170,8 +170,8 @@ class RolesAndPermissionsSeeder extends Seeder {
 	    		}
 	    	}
 	    }
-    	$storedPerms = DB::table(Config::get('entrust.permissions_table'))->get();
-    	if(!empty($storedPerms)) {
+		$storedPerms = DB::table(Config::get('entrust.permissions_table'))->get();
+		if(!empty($storedPerms)) {
 	    	$definedPerms = $this->permissions();
 	    	foreach ($storedPerms as $perm) {
 	    		if ( !array_key_exists($perm->name,$definedPerms) ) {
@@ -181,7 +181,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 	    	}
 	    }
 	    $this->command->info($commandBullet.'Done');
-    	$this->command->info(" ");
-    }
-
-}
+		$this->command->info(" ");
+	}
+	
+	}
