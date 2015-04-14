@@ -41,15 +41,15 @@ class RolesAndPermissionsSeeder extends Seeder {
 	];
 	
     
-    /**
-    * Roles
-    *
-    * @return array()
-    */
-    public function roles() 
-    {    	
-    	return $this->roles;
-    }
+	 /**
+	* Roles
+	*
+	* @return array()
+	*/
+	public function roles() 
+	{    	
+		return $this->roles;
+	}
     
 	/**
 	* Permissions
@@ -57,11 +57,11 @@ class RolesAndPermissionsSeeder extends Seeder {
 	* @param  $name
 	* @return array()
 	*/
-    public function permissions($name = '') 
-    {
-    	$single = (array_key_exists($name,$this->permissions) ? array($name =>$this->permissions[$name]) : false );
-    	return ($name ? $single : $this->permissions);
-    }
+	public function permissions($name = '') 
+	{
+		$single = (array_key_exists($name,$this->permissions) ? array($name =>$this->permissions[$name]) : false );
+		return ($name ? $single : $this->permissions);
+	}
     
     
 	/**
@@ -69,22 +69,22 @@ class RolesAndPermissionsSeeder extends Seeder {
 	*
 	* @return void
 	*/
-    public function run()
-    {	
-    	DB::table(Config::get('entrust.permissions_table'))->delete();
-    	
-    	foreach ($this->roles() as $key => $val) {    
-    		$this->command->info(" ");
-    		$this->command->info('Creating/updating the \''.$key.'\' role');
-    		$this->command->info('-----------------------------------------');
-    		$val['name'] = $key;
-    		$this->reset($val);
-    	}
-    	$this->cleanup();
-    }
+	public function run()
+	{	
+		DB::table(Config::get('entrust.permissions_table'))->delete();
+		
+		foreach ($this->roles() as $key => $val) {    
+			$this->command->info(" ");
+			$this->command->info('Creating/updating the \''.$key.'\' role');
+			$this->command->info('-----------------------------------------');
+			$val['name'] = $key;
+			$this->reset($val);
+		}
+		$this->cleanup();
+	}
     
     
-    /**
+   	/**
     * Reset Role, Permissions & Users
     *
     * @param  $role
