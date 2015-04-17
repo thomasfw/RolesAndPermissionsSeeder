@@ -93,7 +93,6 @@ class RolesAndPermissionsSeeder extends Seeder {
 	public function reset($role) 
 	{
 		$commandBullet = '  -> ';
-		// Remove all permissions (only the reset permissions will be saved)
 		
 		// The Old Role
 		$originalRole = Role::where('name',$role['name'])->first();
