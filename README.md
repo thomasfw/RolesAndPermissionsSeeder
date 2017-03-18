@@ -14,8 +14,8 @@ class RolesAndPermissionsSeeder extends Seeder {
 	protected $roles = [
 	
 		'admin' => [
-			'display_name'	=>	'Administrator', // optional
-			'description'	=>	'administer the website and manage users', // optional
+			'display_name'	=> 'Administrator', // optional
+			'description'	=> 'administer the website and manage users', // optional
 			'permissions' 	=> ['edit_others_posts','can_add_users', 'edit_own_posts'] // optional
 		],
 		
@@ -30,7 +30,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 		
 		'edit_others_posts' => [
 			'display_name' => 'Edit Other\'s Posts', // optional
-			'description'	=>	'edit other users posts', // optional
+			'description'  => 'edit other users posts', // optional
 		],
 		
 		'can_add_users' => [],
